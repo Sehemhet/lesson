@@ -17,11 +17,29 @@ from django.contrib import admin
 from django.urls import path, include
 from home import views
 
-urlpatterns = [
-    path('car/<str:brand>/<str:model>/<int:year>', views.cardef),
-    path('car/<str:brand>/<str:model>', views.cardef),
-    path('car/<str:brand>', views.cardef),
-    path('car/', views.cardef),
-    path('admin/', admin.site.urls),
-    path('home/', views.homedef),
+car_patterns = [
+    path('<str:brand>/<str:model>/<int:year>', views.cardef),
+    path('<str:brand>/<str:model>', views.cardef),
+    path('<str:brand>', views.cardef),
+    path('', views.cardef),
 ]
+
+user_patterns = [
+    path('<str:f_name>/<str:l_name>/<int:age>', views.user_info),
+    path('<str:f_name>/<str:l_name>/', views.user_info),
+    path('<str:f_name>/', views.user_info),
+    path('', views.user_info),
+]
+
+urlpatterns = [
+    path('car/', include(car_patterns)),
+    path('admin/', admin.site.urls),
+    path('', views.homedef, name='home'),
+    path('person/', views.person),
+    path('about/', views.about),
+    path('info/', views.info),
+    path('error/', views.error),
+    path('index/', views.index),
+    path('user/', include(user_patterns)),
+]
+
